@@ -1,5 +1,7 @@
 //GO TO INDEX.TS TO CREATE ENDPOINTS
 
+import type { EventT } from "./Components/Events";
+
 export const getEvents = async () => {
   const res = await fetch("http://localhost:4000/events");
   if (!res.ok) throw new Error("Failed to fetch events");
@@ -41,5 +43,14 @@ export const updateEventColor = async (id: number, color: string) => {
     body: JSON.stringify({ color }),
   });
   if (!res.ok) throw new Error("Failed to update event color");
+  return res.json();
+};
+export const updateEventDate = async (event: EventT) => {
+  const res = await fetch(`http://localhost:4000/events/${event.id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(event),
+  });
+  if (!res.ok) throw new Error("Failed to update event");
   return res.json();
 };

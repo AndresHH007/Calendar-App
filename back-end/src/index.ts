@@ -41,6 +41,54 @@ app.delete("/events/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to delete event" });
   }
 });
+app.put("/events/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isInteger(id))
+    return res.status(400).json({ error: "Invalid id" });
+
+  const { title, date, time, color } = req.body;
+
+  if (
+    title === undefined &&
+    date === undefined &&
+    time === undefined &&
+    color === undefined
+  ) {
+    return res.status(400).json({ error: "No fields to update" });
+  }
+
+  // Parse/validate incoming date if present
+  let parsedDate: Date | undefined;
+  if (date !== undefined && date !== null) {
+    try {
+      if (typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        // 'YYYY-MM-DD' -> treat as UTC midnight to avoid timezone shifts
+        parsedDate = new Date(date + "T00:00:00.000Z");
+      } else {
+        parsedDate = new Date(date);
+      }
+      if (isNaN(parsedDate.getTime())) throw new Error("Invalid date");
+    } catch (err) {
+      return res.status(400).json({ error: "Invalid date format" });
+    }
+  }
+
+  try {
+    const updated = await prisma.event.update({
+      where: { id },
+      data: {
+        ...(title !== undefined ? { title } : {}),
+        ...(parsedDate ? { date: parsedDate } : {}),
+        ...(time !== undefined ? { time } : {}),
+        ...(color !== undefined ? { color } : {}),
+      },
+    });
+    return res.json(updated);
+  } catch (err) {
+    console.error("PUT /events/:id error:", err);
+    return res.status(500).json({ error: "Failed to update event" });
+  }
+});
 //Change Color
 app.put("/events/:id/color", async (req, res) => {
   const { id } = req.params;
