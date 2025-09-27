@@ -88,7 +88,7 @@ export const HandleEventModal = (props: Props) => {
   );
   //Need to filter the events by the time given in object
 
-  const filtDaysByTime = dayEvents.sort(
+  const sortDaysByTime = dayEvents.sort(
     (a: any, b: any) => parseTimeTo24Hour(a.time) - parseTimeTo24Hour(b.time)
   );
 
@@ -115,20 +115,20 @@ export const HandleEventModal = (props: Props) => {
 
         {/* Events List */}
         <div className="space-y-2">
-          <div className="overflow-y-auto h-40">
-            {filtDaysByTime.length === 0 ? (
+          <div className="overflow-y-auto h-32">
+            {sortDaysByTime.length === 0 ? (
               <p className="text-sm text-gray-500">No events for this day</p>
             ) : (
-              filtDaysByTime.map((d) => (
+              sortDaysByTime.map((d) => (
                 <div
                   key={d.id}
-                  className="flex justify-between items-center bg-base-200 px-3 py-2 rounded-md m-2"
+                  className="flex justify-between items-center bg-base-200 px-3 py-2 rounded-md m-2 "
                 >
                   <span>{d.title}</span>
                   <div>{d.time}</div>
                   <div className="flex flex-row gap-2">
                     <button
-                      className={`btn ${
+                      className={`btn text-black ${
                         colorClassMap[d.color || "primary"]
                       } btn-xs`}
                       onClick={() => {
