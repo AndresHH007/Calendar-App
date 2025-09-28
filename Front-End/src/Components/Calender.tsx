@@ -135,7 +135,7 @@ export const Calender = (props: Props) => {
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-7 gap-2">
+      <div className="grid md:grid-cols-7 gap-2 sm:grid-cols-3">
         {days.map((d, ind) => {
           if (!d) {
             return <div key={"blank-" + ind} />;

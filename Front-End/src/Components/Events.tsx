@@ -2,8 +2,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { addEvent as networkAddEvent, getEvents } from "../network";
 import { Calender } from "./Calender";
-import { FaCalendar } from "react-icons/fa";
-import { Timeline } from "./Timeline";
 //Implement time for my type and db TODO
 //And the events filter by time set per day
 export type EventT = {
@@ -37,9 +35,6 @@ export const Events = () => {
         controlledDate={controlledDate}
         setControlledDate={setControlledDate}
       />
-      <div className="w-full my-4">
-        <Timeline events={events} controlledDate={controlledDate} />
-      </div>
     </div>
   );
 };
