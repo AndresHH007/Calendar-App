@@ -1,11 +1,21 @@
 //GO TO INDEX.TS TO CREATE ENDPOINTS
 
 import type { EventT } from "./Components/Events";
-
-export const getEvents = async () => {
+type EventJson = {
+  id: number;
+  title: string;
+  date: Date;
+  color: string;
+  time: string;
+};
+export const getEvents = async (): Promise<EventT[]> => {
   const res = await fetch("http://localhost:4000/events");
   if (!res.ok) throw new Error("Failed to fetch events");
-  return res.json();
+  const response = (await res.json()) as EventJson[];
+  return response.map((event) => ({
+    ...event,
+    date: new Date(event.date),
+  }));
 };
 //When adding events, we need to put in all parameters needed in here and in index.ts
 export const addEvent = async (title: string, date: string, time: string) => {

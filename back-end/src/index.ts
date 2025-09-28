@@ -7,7 +7,11 @@ const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
-
+//Get Users
+app.get("/users", async (req, res) => {
+  const user = await prisma.userM.findMany();
+  res.json(user);
+});
 // Create event
 app.post("/events", async (req, res) => {
   const { title, date, time } = req.body;
@@ -22,6 +26,7 @@ app.get("/events", async (req, res) => {
   const events = await prisma.event.findMany();
   res.json(events);
 });
+
 //Delete Event
 app.delete("/events/:id", async (req, res) => {
   try {
@@ -105,6 +110,7 @@ app.put("/events/:id/color", async (req, res) => {
     res.status(500).json({ error: "Failed to update color" });
   }
 });
+
 app.listen(4000, () => {
   console.log("Server running on http://localhost:4000");
 });

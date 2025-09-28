@@ -1,4 +1,4 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: dark, synthwave;
+  themes: dark, synthwave, cyberpunk;
 }
